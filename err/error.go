@@ -1,6 +1,6 @@
 package err
 
-// An Error wraps lower level errors with code, message and an original error.
+// Error wraps lower level errors with code, message and an original error.
 type Error interface {
 	error
 	// Code returns the short phrase depicting the classification of the error.
@@ -22,11 +22,11 @@ type BatchError interface {
 // NewError returns an Error object described by the code, message and options.
 // The options can be used to include extra information about the error, like the original error.
 func NewError(code, message string, options ...NewErrorOption) Error {
-	return newBaseError(code, message, options...)
+	return NewBaseError(code, message, options...)
 }
 
 // NewBatchError returns an BatchError with a collection of errors as an array of errors.
 // The options can be used to include extra information about the error, like the original error chain.
 func NewBatchError(code, message string, options ...NewErrorOption) BatchError {
-	return newBaseError(code, message, options...)
+	return NewBaseError(code, message, options...)
 }

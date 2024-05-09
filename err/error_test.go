@@ -12,7 +12,7 @@ func TestNewError(t *testing.T) {
 		// given
 		origErr := errors.New("original error")
 		// when
-		err := NewError("code", "message", WithError(origErr))
+		err := NewError("code", "message", WithErrors(origErr))
 		// then
 		assert.Equal(t, "code", err.Code())
 		assert.Equal(t, "message", err.Message())
@@ -34,7 +34,7 @@ func TestNewBatchError(t *testing.T) {
 		// given
 		origErrs := []error{errors.New("first error"), errors.New("second error")}
 		// when
-		err := NewBatchError("code", "message", WithErrorS(origErrs))
+		err := NewBatchError("code", "message", WithErrors(origErrs...))
 		var batchErr BatchError
 		ok := errors.As(err, &batchErr)
 		// then
@@ -44,7 +44,7 @@ func TestNewBatchError(t *testing.T) {
 		assert.Equal(t, origErrs, batchErr.OrigErrs())
 	})
 
-	t.Run("should return batch error with nil original errors when none are provided", func(t *testing.T) {
+	t.Run("should return batch error with empty original errors when none are provided", func(t *testing.T) {
 		// when
 		err := NewBatchError("code", "message")
 		var batchErr BatchError
@@ -53,6 +53,6 @@ func TestNewBatchError(t *testing.T) {
 		assert.True(t, ok)
 		assert.Equal(t, "code", batchErr.Code())
 		assert.Equal(t, "message", batchErr.Message())
-		assert.Nil(t, batchErr.OrigErrs())
+		assert.Empty(t, batchErr.OrigErrs())
 	})
 }

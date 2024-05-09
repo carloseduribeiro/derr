@@ -7,10 +7,10 @@ import (
 )
 
 func TestWithError(t *testing.T) {
-	t.Run("should add a single error to new baseError", func(t *testing.T) {
+	t.Run("should add a single error to new BaseError", func(t *testing.T) {
 		// given
 		origErr := errors.New("original error")
-		err := newBaseError("code", "message", WithError(origErr))
+		err := NewBaseError("code", "message", WithErrors(origErr))
 		// when
 		result := err.OrigErr()
 		// then
@@ -19,7 +19,7 @@ func TestWithError(t *testing.T) {
 
 	t.Run("should not add the error to the new BaseError when the error is nil", func(t *testing.T) {
 		// given
-		err := newBaseError("code", "message", WithError(nil))
+		err := NewBaseError("code", "message", WithErrors(nil))
 		// when
 		result := err.OrigErr()
 		// then
@@ -31,7 +31,7 @@ func TestWithErrorS(t *testing.T) {
 	t.Run("should add multiple errors to the new BaseError", func(t *testing.T) {
 		// given
 		origErrs := []error{errors.New("first error"), errors.New("second error")}
-		err := newBaseError("code", "message", WithErrorS(origErrs))
+		err := NewBaseError("code", "message", WithErrors(origErrs...))
 		// when
 		result := err.OrigErr()
 		var batchErr BatchError
@@ -45,7 +45,7 @@ func TestWithErrorS(t *testing.T) {
 
 	t.Run("shouldNotAddErrorsToBaseErrorWhenErrorsAreNil", func(t *testing.T) {
 		// given
-		err := newBaseError("code", "message", WithErrorS(nil))
+		err := NewBaseError("code", "message", WithErrors(nil))
 		// when
 		result := err.OrigErr()
 		// then
@@ -54,7 +54,7 @@ func TestWithErrorS(t *testing.T) {
 
 	t.Run("shouldNotAddErrorsToBaseErrorWhenErrorsAreEmpty", func(t *testing.T) {
 		// given
-		err := newBaseError("code", "message", WithErrorS([]error{}))
+		err := NewBaseError("code", "message", WithErrors([]error{}...))
 		// when
 		result := err.OrigErr()
 		// then
@@ -65,7 +65,7 @@ func TestWithErrorS(t *testing.T) {
 func TestBaseError_Error(t *testing.T) {
 	t.Run("should return a formatted error message when no there are original error options", func(t *testing.T) {
 		// given
-		err := newBaseError("code", "message")
+		err := NewBaseError("code", "message")
 		// when
 		result := err.Error()
 		// then
@@ -75,7 +75,7 @@ func TestBaseError_Error(t *testing.T) {
 	t.Run("should return a formatted error message with original error when there is one original error", func(t *testing.T) {
 		// given
 		origErr := errors.New("original error")
-		err := newBaseError("code", "message", WithError(origErr))
+		err := NewBaseError("code", "message", WithErrors(origErr))
 		// when
 		result := err.Error()
 		// then
@@ -85,7 +85,7 @@ func TestBaseError_Error(t *testing.T) {
 	t.Run("should return a formatted error message with original errors when there are multiple original errors", func(t *testing.T) {
 		// given
 		origErrs := []error{errors.New("first error"), errors.New("second error")}
-		err := newBaseError("code", "message", WithErrorS(origErrs))
+		err := NewBaseError("code", "message", WithErrors(origErrs...))
 		// when
 		result := err.Error()
 		// then
@@ -96,7 +96,7 @@ func TestBaseError_Error(t *testing.T) {
 func TestBaseError_String(t *testing.T) {
 	t.Run("should return formatted error message when no original errors with the same result of Error method", func(t *testing.T) {
 		// given
-		err := newBaseError("code", "message")
+		err := NewBaseError("code", "message")
 		// when
 		errResult := err.Error()
 		strResult := err.String()
@@ -108,7 +108,7 @@ func TestBaseError_String(t *testing.T) {
 	t.Run("should return formatted error message with original errors when multiple original errors with the same result of Error method", func(t *testing.T) {
 		// given
 		origErrs := []error{errors.New("first error"), errors.New("second error")}
-		err := newBaseError("code", "message", WithErrorS(origErrs))
+		err := NewBaseError("code", "message", WithErrors(origErrs...))
 		// when
 		errResult := err.Error()
 		strResult := err.String()
@@ -122,7 +122,7 @@ func TestBaseError_String(t *testing.T) {
 func TestBaseError_OrigErr(t *testing.T) {
 	t.Run("should return nil when there are no original errors", func(t *testing.T) {
 		// given
-		err := newBaseError("code", "message")
+		err := NewBaseError("code", "message")
 		// when
 		result := err.OrigErr()
 		// then
@@ -132,7 +132,7 @@ func TestBaseError_OrigErr(t *testing.T) {
 	t.Run("should return a single error when there is only one original error", func(t *testing.T) {
 		// given
 		origErr := errors.New("original error")
-		err := newBaseError("code", "message", WithError(origErr))
+		err := NewBaseError("code", "message", WithErrors(origErr))
 		// when
 		result := err.OrigErr()
 		// then
@@ -142,7 +142,7 @@ func TestBaseError_OrigErr(t *testing.T) {
 	t.Run("should return BatchError when there are multiple original errors", func(t *testing.T) {
 		// given
 		origErrs := []error{errors.New("first error"), errors.New("second error")}
-		err := newBaseError("code", "message", WithErrorS(origErrs))
+		err := NewBaseError("code", "message", WithErrors(origErrs...))
 		// when
 		result := err.OrigErr()
 		var batchErr BatchError
@@ -156,8 +156,8 @@ func TestBaseError_OrigErr(t *testing.T) {
 
 	t.Run("should return BatchError with first error details when there are multiple original errors and the first error is of type error", func(t *testing.T) {
 		// given
-		origErrs := []error{newBaseError("first_error_code", "first error message", nil), errors.New("second error")}
-		err := newBaseError("code", "message", WithErrorS(origErrs))
+		origErrs := []error{NewBaseError("first_error_code", "first error message", nil), errors.New("second error")}
+		err := NewBaseError("code", "message", WithErrors(origErrs...))
 		// when
 		result := err.OrigErr()
 		var batchErr BatchError

@@ -14,7 +14,7 @@ func TestSprintError(t *testing.T) {
 		extra := "test of test"
 		expected := "some_error: error doing something\n\ttest of test"
 		// when
-		result := SprintError(code, message, WithExtra(extra))
+		result := sprintError(code, message, withExtra(extra))
 		// then
 		assert.Equal(t, expected, result)
 	})
@@ -26,7 +26,7 @@ func TestSprintError(t *testing.T) {
 		original := errors.New("original error")
 		expected := "some_error: error doing something\ncaused by: original error"
 		// when
-		result := SprintError(code, message, WithOriginalErr(original))
+		result := sprintError(code, message, withOriginalErr(original))
 		// then
 		assert.Equal(t, expected, result)
 	})
@@ -39,7 +39,7 @@ func TestSprintError(t *testing.T) {
 		originalErr := errors.New("original error")
 		expected := "some_error: error doing something\n\ttest of test\ncaused by: original error"
 		// when
-		result := SprintError(code, message, WithExtra(extra), WithOriginalErr(originalErr))
+		result := sprintError(code, message, withExtra(extra), withOriginalErr(originalErr))
 		// then
 		assert.Equal(t, expected, result)
 	})
@@ -50,7 +50,7 @@ func TestSprintError(t *testing.T) {
 		message := "error doing something"
 		expected := "some_error: error doing something"
 		// when
-		result := SprintError(code, message)
+		result := sprintError(code, message)
 		// then
 		assert.Equal(t, expected, result)
 	})

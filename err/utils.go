@@ -5,25 +5,25 @@ import (
 	"strings"
 )
 
-// SprintErrorOption is a type for options that can be passed to SprintError.
-type SprintErrorOption func(*string)
+// sprintErrorOption is a type for options that can be passed to sprintError.
+type sprintErrorOption func(*string)
 
-// WithExtra includes extra information about the error in formatted error code.
-func WithExtra(extra string) SprintErrorOption {
+// withExtra includes extra information about the error in formatted error code.
+func withExtra(extra string) sprintErrorOption {
 	return func(msg *string) {
 		*msg = fmt.Sprintf("%s\n\t%s", *msg, extra)
 	}
 }
 
-// WithOriginalErr includes a line about origin error information.
-func WithOriginalErr(origErr error) SprintErrorOption {
+// withOriginalErr includes a line about origin error information.
+func withOriginalErr(origErr error) sprintErrorOption {
 	return func(msg *string) {
 		*msg = fmt.Sprintf("%s\ncaused by: %s", *msg, origErr.Error())
 	}
 }
 
-// SprintError returns a string of the formatted error code.
-func SprintError(code, message string, options ...SprintErrorOption) string {
+// sprintError returns a string of the formatted error code.
+func sprintError(code, message string, options ...sprintErrorOption) string {
 	msg := fmt.Sprintf("%s: %s", code, message)
 	for _, option := range options {
 		option(&msg)
