@@ -1,4 +1,4 @@
-module github.com/carloseduribeiro/go-err
+module github.com/carloseduribeiro/derr
 
 go 1.22.0
 
