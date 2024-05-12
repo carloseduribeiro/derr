@@ -1,4 +1,4 @@
-package err
+package derr
 
 // Error wraps lower level errors with code, message and an original error.
 type Error interface {

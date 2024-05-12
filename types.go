@@ -1,4 +1,4 @@
-package err
+package derr
 
 type NotFoundError struct {
 	*BaseError
