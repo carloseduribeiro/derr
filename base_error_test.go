@@ -43,7 +43,7 @@ func TestWithErrorS(t *testing.T) {
 		assert.Equal(t, origErrs, batchErr.OrigErrs())
 	})
 
-	t.Run("shouldNotAddErrorsToBaseErrorWhenErrorsAreNil", func(t *testing.T) {
+	t.Run("should not add errors to base error when errors are nil", func(t *testing.T) {
 		// given
 		err := NewBaseError("code", "message", WithErrors(nil))
 		// when
@@ -52,7 +52,7 @@ func TestWithErrorS(t *testing.T) {
 		assert.Nil(t, result)
 	})
 
-	t.Run("shouldNotAddErrorsToBaseErrorWhenErrorsAreEmpty", func(t *testing.T) {
+	t.Run("should not add errors to base error when errors are empty", func(t *testing.T) {
 		// given
 		err := NewBaseError("code", "message", WithErrors([]error{}...))
 		// when
