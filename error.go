@@ -21,12 +21,12 @@ type BatchError interface {
 
 // NewError returns an Error object described by the code, message and options.
 // The options can be used to include extra information about the error, like the original error.
-func NewError(code, message string, options ...NewErrorOption) Error {
+func NewError(code, message string, options ...ErrorOption) Error {
 	return NewBaseError(code, message, options...)
 }
 
 // NewBatchError returns an BatchError with a collection of errors as an array of errors.
 // The options can be used to include extra information about the error, like the original error chain.
-func NewBatchError(code, message string, options ...NewErrorOption) BatchError {
+func NewBatchError(code, message string, options ...ErrorOption) BatchError {
 	return NewBaseError(code, message, options...)
 }

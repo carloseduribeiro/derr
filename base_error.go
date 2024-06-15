@@ -2,11 +2,11 @@ package derr
 
 import "errors"
 
-// NewErrorOption is a type for options that can be passed to NewError and NewBatchError functions.
-type NewErrorOption func(*BaseError)
+// ErrorOption is a type for options that can be passed to NewError and NewBatchError functions.
+type ErrorOption func(*BaseError)
 
 // WithErrors includes errors in the new error object as original errors.
-func WithErrors(errs ...error) NewErrorOption {
+func WithErrors(errs ...error) ErrorOption {
 	return func(b *BaseError) {
 		if errs != nil && len(errs) > 0 {
 			if b.errs == nil {
@@ -30,7 +30,7 @@ type BaseError struct {
 }
 
 // NewBaseError returns an error object for the code, message, and errors.
-func NewBaseError(code, message string, options ...NewErrorOption) *BaseError {
+func NewBaseError(code, message string, options ...ErrorOption) *BaseError {
 	b := &BaseError{
 		code:    code,
 		message: message,
